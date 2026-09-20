@@ -1,6 +1,6 @@
 ---
 name: input-evaluator
-description: Evaluates engineering user prompts and task inputs on-the-fly, providing non-blocking 2-line coaching feedback on missing context (component, logs, reproduction steps, acceptance criteria) while seamlessly continuing task execution. Use when the user asks to evaluate/audit a prompt, improve prompt writing, turn on prompt coaching, or when /input-evaluator is called.
+description: Evaluates engineering user prompts and task inputs on-the-fly, providing non-blocking coaching feedback on missing context (component, logs, reproduction steps, acceptance criteria) and generating a refined, ready-to-copy version of the prompt while seamlessly continuing task execution. Use when the user asks to evaluate/audit a prompt, improve prompt writing, turn on prompt coaching, or when /input-evaluator is called.
 ---
 
 # Input Evaluator & Engineering Prompt Coach
@@ -10,7 +10,7 @@ A non-blocking pre-flight coaching layer that trains engineers to formulate high
 ## Core Philosophy
 
 1. **Zero Friction / Non-Blocking:** NEVER pause, wait, or ask the user to retype their prompt. Always execute immediately based on repository context, smart defaults, and code exploration.
-2. **Micro-Coaching:** Highlight missing engineering context in 2–3 concise lines at the very beginning of the response.
+2. **Micro-Coaching & Instant Refinement:** Highlight missing engineering context in 1–2 concise lines AND immediately provide an improved, production-ready version of the prompt (`🎯 Как стоило сформулировать`).
 3. **Compound Learning:** Over time, the engineer subconsciously adopts precise prompt structure: Target Component + Error Signals/Logs + Reproduction Steps + Acceptance Criteria.
 
 ---
@@ -54,7 +54,8 @@ Activated when the user requests coaching (e.g. `/input-evaluator on`, «вкл�
 
 **Response Pattern:**
 ```markdown
-> 💡 **Инженерный ввод:** [2 строки конструктивной критики: чего не хватило для идеального контекста].
+> 💡 **Инженерный ввод:** [1–2 строки критики: чего не хватило для идеального контекста].
+> 🎯 **Как стоило сформулировать:** `[Готовый улучшенный промпт со всеми деталями, пригодный для копирования]`
 
 [Агент сразу приступает к решению задачи: формулирует гипотезу по кодовой базе, ищет файлы и выполняет работу]
 ```
@@ -78,7 +79,8 @@ To enable this evaluation protocol automatically on **every message** across all
 ## Pre-flight Input Coaching Protocol
 Before executing any engineering request:
 1. Briefly evaluate whether the input specifies: (a) target module/file, (b) logs/error trace, (c) reproduction steps, (d) acceptance criteria.
-2. If any are missing, prepend the response with a 2-line non-blocking coaching callout:
+2. If any are missing, prepend the response with a concise coaching callout and an improved prompt version:
    > 💡 **Инженерный ввод:** [Чего не хватило для идеального контекста].
+   > 🎯 **Как стоило сформулировать:** `[Идеальная формулировка запроса со всеми деталями]`.
 3. Seamlessly proceed with execution immediately based on workspace inspection and sensible defaults. Never block.
 ```

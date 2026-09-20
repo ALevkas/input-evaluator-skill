@@ -5,7 +5,7 @@
 Most prompt optimizers and evaluators interrupt your flow: they force you to run separate CLI tools (like Promptfoo), or block execution waiting for you to rewrite your prompt.
 
 **Input Evaluator** is different. It acts as an ambient pre-flight coach:
-1. **Never blocks execution:** The agent evaluates your input, shows you how it could be framed more effectively in 2 lines, and immediately gets to work.
+1. **Never blocks execution:** The agent evaluates your input, shows missing context in 1–2 lines, provides an immediately usable refined prompt, and starts working right away.
 2. **Trains your engineering intuition:** Teaches you to think in terms of **Target**, **Signal**, **Reproduction**, and **Acceptance Criteria**.
 3. **Works cross-platform:** Compatible with **Oh My Pi (OMP)**, **Claude Code**, and any agent harness supporting Agent Skills or `CLAUDE.md`.
 
@@ -36,8 +36,9 @@ Add this snippet to your project's `CLAUDE.md`, `AGENTS.md`, or your global agen
 ## Pre-flight Input Coaching Protocol
 Before executing any engineering request:
 1. Briefly evaluate whether the input specifies: (a) target module/file, (b) logs/error trace, (c) reproduction steps, (d) acceptance criteria.
-2. If any are missing, prepend the response with a 2-line non-blocking coaching callout:
+2. If any are missing, prepend the response with a concise coaching callout and an improved prompt version:
    > 💡 **Инженерный ввод:** [Чего не хватило для идеального контекста].
+   > 🎯 **Как стоило сформулировать:** `[Улучшенная версия промпта со всеми деталями]`.
 3. Seamlessly proceed with execution immediately based on workspace inspection and sensible defaults. Never block.
 ```
 
@@ -46,6 +47,7 @@ Whenever you submit a prompt like:
 
 The agent responds:
 > 💡 **Инженерный ввод:** Для точечного фикса помогло бы указать: точный модуль (`src/app/api/auth`), текст ошибки из консоли и шаги воспроизведения.
+> 🎯 **Как стоило сформулировать:** `«В модуле src/app/api/auth падает 401 Unauthorized при обновлении refresh-токена в Chrome. Вот стек-трейс: [...]. Проверь логику валидации в route.ts»`.
 >
 > *Приступаю к выполнению:* сканирую файлы в `src/app/api/auth` и проверяю логи...
 
